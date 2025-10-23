@@ -13,5 +13,3 @@ with sync_playwright() as playwright:
     const title = document.getElementById('authentication-ui-course-title-text');
     title.textContent = 'New Text';
     """)
-
-    page.wait_for_timeout(5000)
