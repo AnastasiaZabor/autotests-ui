@@ -1,4 +1,4 @@
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 with sync_playwright() as playwright:
    
@@ -23,5 +23,23 @@ with sync_playwright() as playwright:
     registration_button.click()
 
     context.storage_state(path="browser-state.json")
+
+    page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
+
+    text_title = page.get_by_test_id('courses-list-toolbar-title-text')
+    expect(text_title).to_be_visible
+    expect(text_title).to_have_text("Courses")
+
+    text_block = page.get_by_test_id('courses-list-empty-view-title-text')
+    expect(text_block).to_be_visible
+    expect(text_block).to_have_text("There is no results")
+
+    empty_block =  page.get_by_test_id('courses-list-empty-view-icon')
+    expect(empty_block).to_be_visible
+
+    text1_block = page.get_by_test_id('courses-list-empty-view-description-text')
+    expect(text1_block).to_be_visible
+    expect(text1_block).to_have_text("Results from the load test pipeline will be displayed here")
+
 
     page.wait_for_timeout(5000)
