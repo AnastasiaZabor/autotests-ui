@@ -25,6 +25,7 @@ from tools.routes import AppRoute
 @allure.suite(AllureSuite.AUTHENTICATION)
 @allure.sub_suite(AllureSubSuite.AUTHORIZATION)
 class TestAuthorization:
+    @pytest.mark.xdist_group(name="authorization-group")
     @allure.title('User login with wrong email or password')
     @allure.severity(Severity.CRITICAL)
     def test_wrong_email_or_password_authorization(self, login_page: LoginPage):
