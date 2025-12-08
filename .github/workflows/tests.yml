@@ -31,13 +31,23 @@ jobs:
         run: |
           pytest -m regression --alluredir=allure-results --numprocesses 2  # Запускаем тесты, отмеченные как "regression", генерируем результаты для Allure
 
-      - name: Get Allure history
+  publish-report:
+    if: always()
+    needs: [ run-tests ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
         uses: actions/checkout@v4
-        if: always()
-        continue-on-error: true
         with:
           ref: gh-pages
           path: gh-pages
+
+      - name: Download Allure results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
 
       - name: Generates Allure Report with history
         uses: simple-elf/allure-report-action@v1.13
@@ -53,3 +63,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
+        
